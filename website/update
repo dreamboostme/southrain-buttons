@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "Обновляем архив"
+rm ./southrain-buttons.zip
+zip -r -9 ./southrain-buttons.zip ../dev/design/  ../dev/result/
+
+echo "Удаляем старые картинки..."
+rm ./img/s/*
+rm ./img/b/* 
+ 
+echo "Копируем в папку новые изображения..."
+cp ../dev/result/*.png ./img/s/
+cp ../dev/result/*.png ./img/b/
+
+echo "Изменяем размер и формат изображений..."
+mogrify -format jpg -resize 128x128 ./img/s/*.png
+
+echo "Удаляем не нужные нам PNG..."
+rm ./img/s/*.png
+
+echo "Собираем страницу по шаблону..."
+ruby ./make_page.rb
+
+echo "ГОТОВО!"
